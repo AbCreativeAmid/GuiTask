@@ -1,5 +1,10 @@
 from flask import Flask
-from app.config import Config
+from flask_sqlalchemy import SQLAlchemy
+from config import Config
+import os
 app = Flask(__name__)
-app.config.from_object(Config)
-from app import routes 
+app.config.from_object(os.environ['APP_SETTINGS'])
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+from models import Teacher
+import routes 

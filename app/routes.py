@@ -1,5 +1,8 @@
 from flask import render_template
-from app import app
+from flask_sqlalchemy import SQLAlchemy
+from __init__ import app
+from models import Teacher
+db = SQLAlchemy(app)
 @app.route('/index')
 @app.route('/')
 def index():
@@ -34,3 +37,10 @@ def wishlist():
 @app.route('/login')
 def login():
     return render_template('login.html')
+@app.route('/add')
+def add():
+    name = "abudllah"
+    lastname = "Hussaini"
+    age = 23
+    try:
+        teacher = Teacher(name,lastname,23)
