@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="ftco-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-7 ftco-animate">
+        <form action="{{url_for('add_user')}}" class="billing-form"  method="POST" novalidate enctype="multipart/form-data">
+          <h3 class="mb-4 billing-heading">Add User</h3>
+          <div class="row align-items-end">
+            <div class="col-md-6">
+              <div class="form-group">
+                {{form.hidden_tag()}}
+                <input type="hidden" name="id" value="-1">
+                {{form.email.label}}
+                {{form.email}}
+                {% for error in form.email.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                {{form.username.label}}
+                {{form.username}}
+                {% for error in form.username.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+              </div>
+            </div>
+             <div class="col-md-6">
+                <div class="form-group">
+                    {{form.password.label}}
+                    {{form.password}}
+                    {% for error in form.password.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{form.rpassword.label}}
+                    {{form.rpassword}}
+                </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                {{form.role.label}}
+                <div class="select-wrap">
+                  <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                  {{form.role(style="width:100%")}}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                  {{form.photo.label}}
+                  {{form.photo}}
+              </div>
+          </div>
+            <div class="w-100"></div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    {{ form.submit}}
+                </div>
+              </div>
+          </div>
+        </form><!-- END -->
+      </div>
+    </div>
+  </div>
+</section> <!-- .section -->
+{% endblock %}

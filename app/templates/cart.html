@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+    <div class="hero-wrap hero-bread" style="background-image: url({{url_for('static',filename='images/bg_1.jpg')}});">
       <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate text-center">
@@ -22,115 +22,105 @@
 						        <th>&nbsp;</th>
 						        <th>&nbsp;</th>
 						        <th>Product name</th>
-						        <th>Price</th>
-						        <th>Quantity</th>
+								<th>Price</th>
+								<th>Discount</th>
+						        <th>Quantity(kg)</th>
 						        <th>Total</th>
 						      </tr>
 						    </thead>
 						    <tbody>
+								{% if cartlist %}
+								{% for c in cartlist%}
 						      <tr class="text-center">
 						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 						        
-						        <td class="image-prod"><div class="img" style="background-image:url(images/product-3.jpg);"></div></td>
+						        <td class="image-prod"><div class="img" style="background-image:url({{url_for('static',filename='images/products/'+c['photo'].split('/')[-1])}});"></div></td>
 						        
 						        <td class="product-name">
-						        	<h3>Bell Pepper</h3>
+						        	<h3>{{c['name']}}</h3>
 						        	<p>Far far away, behind the word mountains, far from the countries</p>
 						        </td>
 						        
-						        <td class="price">$4.90</td>
-						        
+						        <td class="price" id="{{c['id']}}">{{c['price']}}</td>
+						        <td class="discount" id="{{c['id']}}">{{c['discount']}}</td>
 						        <td class="quantity">
 						        	<div class="input-group mb-3">
-					             	<input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
+					<form action="" class="billing-form" id="pay_form" method="post">
+					             	<input type="text" name="quantity_{{c['id']}}" id="{{c['id']}}" class="quantity_input form-control input-number" value="1" min="1" max="100">
 					          	</div>
 					          </td>
 						        
-						        <td class="total">$4.90</td>
+						        <td class="total" id="{{c['id']}}">{{c['price']-c['discount']}}</td>
 						      </tr><!-- END TR-->
-
-						      <tr class="text-center">
-						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-						        
-						        <td class="image-prod"><div class="img" style="background-image:url(images/product-4.jpg);"></div></td>
-						        
-						        <td class="product-name">
-						        	<h3>Bell Pepper</h3>
-						        	<p>Far far away, behind the word mountains, far from the countries</p>
-						        </td>
-						        
-						        <td class="price">$15.70</td>
-						        
-						        <td class="quantity">
-						        	<div class="input-group mb-3">
-					             	<input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-					          	</div>
-					          </td>
-						        
-						        <td class="total">$15.70</td>
-						      </tr><!-- END TR-->
+								  {%endfor%}
+								  {%else%}
+								  <tr>
+									  <td>
+								  <h1 style="color:gray">You did not select any product</h1>
+								</td>
+								</tr>
+							  {% endif%}
 						    </tbody>
 						  </table>
 					  </div>
     			</div>
     		</div>
     		<div class="row justify-content-end">
-    			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
-    				<div class="cart-total mb-3">
-    					<h3>Coupon Code</h3>
-    					<p>Enter your coupon code if you have one</p>
-  						<form action="#" class="info">
-	              <div class="form-group">
-	              	<label for="">Coupon code</label>
-	                <input type="text" class="form-control text-left px-3" placeholder="">
-	              </div>
-	            </form>
-    				</div>
-    				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Apply Coupon</a></p>
-    			</div>
-    			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
-    				<div class="cart-total mb-3">
-    					<h3>Estimate shipping and tax</h3>
-    					<p>Enter your destination to get a shipping estimate</p>
-  						<form action="#" class="info">
-	              <div class="form-group">
-	              	<label for="">Country</label>
-	                <input type="text" class="form-control text-left px-3" placeholder="">
-	              </div>
-	              <div class="form-group">
-	              	<label for="country">State/Province</label>
-	                <input type="text" class="form-control text-left px-3" placeholder="">
-	              </div>
-	              <div class="form-group">
-	              	<label for="country">Zip/Postal Code</label>
-	                <input type="text" class="form-control text-left px-3" placeholder="">
-	              </div>
-	            </form>
-    				</div>
-    				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Estimate</a></p>
-    			</div>
+				<div class="col-xl-7 ftco-animate" style="display: none;" id="pay_content">
+					
+						<h3 class="mb-4 billing-heading">Billing Details</h3>
+						<div class="row align-items-end">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="firstname">Firt Name</label>
+									<input type="text" name="name" class="form-control" placeholder="">
+								</div>
+							</div>
+							
+						
+							<div class="w-100"></div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="streetaddress">Address</label>
+									<input type="text" name="address" class="form-control" placeholder="House number and street name">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="phone">Phone</label>
+									<input type="text" name="phone" class="form-control" placeholder="">
+									<input type="hidden" name="price" id="price">
+								</div>
+							</div>
+							<div class="w-100"></div>
+							<div class="col-md-12">
+								<div class="form-group mt-4">
+									<div class="radio">
+										<p><a id="pay" class="btn btn-primary py-3 px-4">Pay Now</a></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form><!-- END -->
+				</div>
     			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
     				<div class="cart-total mb-3">
     					<h3>Cart Totals</h3>
     					<p class="d-flex">
     						<span>Subtotal</span>
-    						<span>$20.60</span>
-    					</p>
-    					<p class="d-flex">
-    						<span>Delivery</span>
-    						<span>$0.00</span>
+    						<span id="subtotal">$20.60</span>
     					</p>
     					<p class="d-flex">
     						<span>Discount</span>
-    						<span>$3.00</span>
+    						<span id="tdiscount">$3.00</span>
     					</p>
     					<hr>
     					<p class="d-flex total-price">
     						<span>Total</span>
-    						<span>$17.60</span>
+    						<span id="total">$17.60</span>
     					</p>
     				</div>
-    				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+					<p><a id="checkout" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
     			</div>
     		</div>
 			</div>
@@ -158,38 +148,60 @@
 {% block script %}
   <script>
 		$(document).ready(function(){
+			
+			// var dtotal =0;
+			// var ddiscount =0;
+			// totals = $("td.total");
+			// discounts = $("td.discount");
+			// for(var i =0; i< totals.length;i++)
+			// {
+			// 	ddiscount += parseInt(discounts[i].innerHTML);
+			// 	dtotal += parseInt(totals[i].innerHTML);
+			// }
+			// $("#tdiscount").html(ddiscount);
+			// $("#total").html(dtotal);
+			// $("#subtotal").html(ddiscount+dtotal);
 
-		var quantitiy=0;
-		   $('.quantity-right-plus').click(function(e){
-		        
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		            
-		            $('#quantity').val(quantity + 1);
+			var subtotal = 0;
+			var tdiscount = 0;
+			
+			$(".quantity_input").blur(function(){
+				q = $(this).val()
+				$("#pay_content").hide();
+				if(q <1)
+				{
+					alert("quantity must be at least 1");
+					$(this).val(1);
+					
+				}
+				else if(q > 100)
+				{
+					alert("quantity must be less than 100");
+					$(this).val(100);
+				}
+				q = $(this).val()
+				id = $(this).attr("id");
+				price = $(".price[id="+id+"]").html();
+				discount = $(".discount[id="+id+"]").html();
+				$(".total[id="+id+"]").html(q*(price-discount));
+				tdiscount += parseInt(discount*q);
+				subtotal +=parseInt(q*price);
+				$("#tdiscount").html(tdiscount);
+				$("#subtotal").html(subtotal);
+				$("#total").html(subtotal-tdiscount);
+				$("#price").val(subtotal-tdiscount);
+			});
 
-		          
-		            // Increment
-		        
-		    });
+			$("#checkout").click(function()
+			{
+				$("#pay_content").slideDown(500);
+			});
+			$("#pay").click(function()
+			{
+				$("#pay_form").submit();
+			});
 
-		     $('.quantity-left-minus').click(function(e){
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		      
-		            // Increment
-		            if(quantity>0){
-		            $('#quantity').val(quantity - 1);
-		            }
-		    });
-		    
+			$(".quantity_input").trigger("blur");
 		});
 	</script>
 {% endblock %}

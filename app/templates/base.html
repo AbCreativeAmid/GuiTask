@@ -8,14 +8,15 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
-
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{url_for('static',filename='css/open-iconic-bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static',filename='css/animate.css')}}">
     
     <link rel="stylesheet" href="{{url_for('static',filename='css/owl.carousel.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static',filename='css/owl.theme.default.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static',filename='css/magnific-popup.css')}}">
-
+    {% block style %}
+    {% endblock %}
     <link rel="stylesheet" href="{{url_for('static',filename='css/aos.css')}}">
 
     <link rel="stylesheet" href="{{url_for('static',filename='css/ionicons.min.css')}}">
@@ -60,20 +61,34 @@
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
 	          <li class="nav-item active"><a href="{{url_for('index')}}" class="nav-link">Home</a></li>
-	          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
+            <li class="nav-item"><a href="{{url_for('shop')}}" class="nav-link">Shop</a></li>
+            <li class="nav-item"><a href="{{url_for('wishlist')}}" class="nav-link">Wishlist</a></li>
+            <li class="nav-item"><a href="{{url_for('blog')}}" class="nav-link">Blog</a></li>
+	          <li class="nav-item"><a href="{{url_for('about')}}" class="nav-link">About</a></li>
+	          <li class="nav-item"><a href="{{url_for('contact')}}" class="nav-link">Contact</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
-              	<a class="dropdown-item" href="{{url_for('shop')}}">Shop</a>
-              	<a class="dropdown-item" href="{{url_for('wishlist')}}">Wishlist</a>
-                <a class="dropdown-item" href="{{url_for('product_single')}}">Single Product</a>
-                <a class="dropdown-item" href="{{url_for('cart')}}">Cart</a>
-                <a class="dropdown-item" href="{{url_for('checkout')}}">Checkout</a>
+                <a class="dropdown-item" href="{{url_for('users')}}">Users</a>
+                <a class="dropdown-item" href="{{url_for('products')}}">Products</a>
+                <a class="dropdown-item" href="{{url_for('checkout')}}">Posts</a>
               </div>
             </li>
-	          <li class="nav-item"><a href="{{url_for('about')}}" class="nav-link">About</a></li>
-	          <li class="nav-item"><a href="{{url_for('blog')}}" class="nav-link">Blog</a></li>
-	          <li class="nav-item"><a href="{{url_for('contact')}}" class="nav-link">Contact</a></li>
-	          <li class="nav-item cta cta-colored"><a href="{{url_for('cart')}}" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+	          <li class="nav-item cta cta-colored"><a href="{{url_for('cart')}}" class="nav-link">
+              <span class="icon-shopping_cart"></span>
+              {% if session.get('cartlenght')!=None %}
+             [ <span id='buylist'>{{session.get('cartlenght')}}</span>]
+              {% else %}
+              [<span id='buylist'>0</span>]
+              {%endif%}
+            </a></li>
+            <li class="nav-item cta cta-colored"><a href="{{url_for('logout')}}" class="nav-link">
+              
+              {% if session.get('login')!=None %}
+             [ <span id='buylist'>{{session.get('login')['username']}}</span>]
+              {% else %}
+              {%endif%}
+            </a></li>
 
 	        </ul>
 	      </div>
@@ -182,6 +197,6 @@
   <script src="{{url_for('static',filename='https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false')}}"></script>
   <script src="{{url_for('static',filename='js/google-map.js')}}"></script>
   <script src="{{url_for('static',filename='js/main.js')}}"></script>
-    
+   
   </body>
 </html>
